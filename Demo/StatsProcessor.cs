@@ -6,40 +6,33 @@ using System.Threading.Tasks;
 
 namespace Demo
 {
-    internal class Stats
+    /// <summary>
+    /// This class will perform some basic statistics calculations
+    /// </summary>
+    /// 
+    internal class StatsProcessor
     {
+        // data set that is provided to the object is encapsulatd
         internal int[] Numbers { private get; set; }
 
-        internal int CalSum()
+        internal StatsResult GetStatsProcessorResult()
         {
-            int sum = 0;
-            foreach (int i in Numbers)
-            {
-                sum += i;
-            }
-            // this uses a nifty util from .NET from the LINQ namespace
-            // see the "using..." section at the top of the file
-            return sum;
+            var result = new StatsResult();
+            result.Mean = CalAverage();
+            result.Median = CalMedian();
+            result.Mode = CalMode();
+            return result;
         }
-        internal double CalMean()
+        private int CalAverage() => Numbers.Sum() / Numbers.Length;
+
+        private int CalMedian()
         {
-            int n = Numbers.Length;
-            int sum = 0;
-            for (int i = 0; i < n; i++)
-                sum += Numbers[i];
-
-            return (double)sum / (double)n;
-        }
-
-        internal double CalMedian()
-        {
-            int n = Numbers.Length;
-            // Checks if input array has even or odd number of elements and finds the average
-            if (n % 2 != 0)
-                return (double)Numbers[n / 2];
-
-            // Gets position of the median
-            return (double)(Numbers[(n - 1) / 2] + Numbers[n / 2]) / 2.0;
+            var sortedData = Numbers.OrderBy(i => i).ToArray();
+            var n = sortedData.Length;
+            var median = n % 2 == 0
+                ? (sortedData[n / 2 - 1] + sortedData[n / 2]) / 2
+                : sortedData[n / 2];
+            return median;
         }
 
         internal int CalMode()

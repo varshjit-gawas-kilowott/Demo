@@ -8,24 +8,28 @@ namespace Demo
 {
     internal class Program
     {
-       static int[] a = { 40, 38, 37, 36, 34, 33, 32, 31, 30, 30, 30, 29, 26, 26, 19 };
+        // some test data
+        static int[] a = { 40, 38, 37, 36, 34, 33, 32, 31, 30, 30, 30, 29, 26, 26, 19 };
 
-        public static void Main(string[] args)
+         static void Main(string[] args)
         {
-            var sobject = new Stats();
-            sobject.Numbers = a;
+            // create an object of the StatsProcessor class
+            var spObject = new StatsProcessor();
 
-            var sum = sobject.CalSum();
-            Console.WriteLine($"Sum:{sum}");
+            // feed it the test data as input
+            // (this maybe eventually coming from somewhere else...)
+            spObject.Numbers = a;
 
-            var mean = sobject.CalMean();
-            Console.WriteLine($"Mean:{mean}");
+            /*
+             * invoke the method to do the processing 
+             * and capture the output
+             */
+            var result = spObject.GetStatsProcessorResult();
 
-            var median = sobject.CalMedian();
-            Console.WriteLine($"Median:{median}");
-
-            var mode = sobject.CalMode();
-            Console.WriteLine($"Mode:{mode}");
+            /// console i/o is not the responsibility of the StatsProcessor class!
+            Console.WriteLine($"Average:{result.Mean}");
+            Console.WriteLine($"Median:{result.Median}");
+            Console.WriteLine($"Mode:{result.Mode}");
 
             Console.ReadLine();
         }
